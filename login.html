@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<title>Inicia Session en Arcanos Proxy!</title>
+</head>
+
+<body>
+<p><h1>Arcanos Proxy</h1></br>
+<h3>Necesitas iniciar session para poder navegar.</h3>
+<br>
+</p>
+<form id="login" name="login" method="post" action="http://192.168.35.118:8080/index.php">
+  <label>
+  Usuario:  &nbsp;    &nbsp; &nbsp;
+  <input name="username" type="text" maxlength="20" />
+  <br />
+  Contrase&ntilde;a: 
+  <input name="password" type="text" maxlength="20" />
+  </label>
+  <p>
+    <label>Tiempo
+    <select name="time">
+      <option value="3" selected="selected">3 minutos</option>
+      <option value="10">10 minutos</option>
+      <option value="30">30 minutos</option>
+      <option value="60">1 hora</option>
+      <option value="180">3 horas</option>
+      <option value="300">5 horas</option>
+      <option value="600">10 horas</option>
+    </select>
+    </label>
+  </p>
+  <p>&nbsp;</p>
+  <p>
+    <label>
+    <input type="submit" name="Submit" value="Iniciar Session" />
+    </label>
+      </p>
+</form>
+</body>
+</html>
+
