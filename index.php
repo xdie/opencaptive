@@ -2,7 +2,7 @@
 
 include("db.php"); // Conectamos a la Base de Datos
 include("functions.php"); // Funciones comunes
-
+include("config.php");
 
 if ($_GET['op']== "block"){
 
@@ -51,7 +51,7 @@ function createSession($username,$smin) {
     	    return false;
         } else {
         
-	      logg("Info","Session created to ".$username. " ".$ip. " expire ".readTime($end));
+	      echo logg("Info","Session created to ".$username. " ".$ip. " expire ".readTime($end));
               echo "La session fue creada con exito!";
 	      echo "</br>Redirigiendo...";
 	      sleep(5);
