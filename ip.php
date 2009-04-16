@@ -16,7 +16,12 @@ while (!feof(STDIN)) {
 
         $line = trim(fgets(STDIN));
         $ip = rawurldecode($line);
+	if ($ip == "\n"){
+	fwrite(STDOUT, "ERR"."\n"); // no encontro nada, lo pateamos
+	
+	}else{
 	checkIp($ip);	
+	}
 }
 
 
@@ -41,8 +46,8 @@ if ($row['ip'] == $ip) {
 }
 
 fwrite(STDOUT, "ERR"."\n"); // no encontro nada, lo pateamos
-    logg("Error","ERR returned from iphelper ");
-sleep(2);
+    //logg("Error","ERR returned from iphelper ");
+
 }
 
 ?>
