@@ -20,7 +20,6 @@ function readTime($time) {
         return $arraytime['tm_hour'].":".$min.":".$sec;
 }
 
-
 function logg($type,$string) {
 
 include("config.php"); // Cargamos la configuracion
