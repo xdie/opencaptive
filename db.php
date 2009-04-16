@@ -1,9 +1,6 @@
 <?php
 
-$dbhost = "localhost";
-$dbuser = "root";
-$dbpass = "";
-$dbname = "maindb";
+include("config.php");
 
 $dbsock = mysql_connect($dbhost, $dbuser, $dbpass);
 

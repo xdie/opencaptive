@@ -1,52 +1,60 @@
 <?php
 
 include("db.php"); // Conectamos a la Base de Datos
+include("functions.php"); // Funciones comunes
+
 
 if ($_GET['op']== "block"){
-    
+
     echo "<h1>Usted no tiene permisos!</h1>\n";
     echo "Hola " . $_GET['clientuser'] . "! estas en la maquina " . $_GET['clientaddr'] . " No tienes permisos para navegar en " . $_GET['url'] . " por politicas de grupo " . $_GET['clientgroup'] . "</br> Si piensas que esto no es correcto, por favor comunicalo al administrador!<br>";
-exit;
+
+    logg("Block",$_GET['clientuser']. " Ip:".$_GET['clientaddr']. " Group:".$_GET['clientgroup']." Url:".$_GET['url']);
+    exit;
 
 }
 
 // Si es valido el usuario y password vamos authorizar creando la session
     
-   $username = mysql_escape_string($_POST['username']);
-   $time = mysql_escape_string($_POST['time']);
+$username = mysql_escape_string($_POST['username']);
+$time = mysql_escape_string($_POST['time']);
 
    if (empty($username) or empty($time)) {
 	checkLogged();
-   }else{
-       createSession($username,$time);
-    echo system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid 
+	
+	} else {
+ 
+        createSession($username,$time);
+        $op = system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid borre las credenciales cacheadas
+	logg("Info","Reload squid config and flush users caches!".$op);
+	}
 
-    }
 
+// Crea la session en la base de datos
 
 function createSession($username,$smin) {
 
-$arraytime = array();
-
+    $arraytime = array();
     $ip = $_SERVER['REMOTE_ADDR'];
-    $mac = "00:0d:87:a6:ec:96"; //mac ficticia
-    $start = time(); // marcamos el inicio
-     
-    $end = $smin * 60 + $start; //pasamos los minutos a segundos y seteamos cuando va expirar
+    
+    $mac = "00:0d:87:a6:ec:96"; // mac ficticia
+    $start = time(); 		// Marcamos hora inicial
+    $end = $smin * 60 + $start; //Pasamos los minutos a segundos y seteamos cuando va expirar
     $query = "INSERT INTO `sessions` (username, ip, mac, start, end) VALUES ('$username','$ip', '$mac', '$start', '$end')"; 
 
-     $result = mysql_query($query);
-     if (!$result) {
+    $result = mysql_query($query);
+    
+    if (!$result) {
 
-        echo "fallo al crear la session".mysql_error()."\n";
-        return false;
-          }else {
-              
-               echo "La session fue creada con exito!";
-	       sleep(3);
-	       echo "</br>Redirigiendo...";
-	       sleep(4);
-	       
+    	    echo "fallo al crear la session".mysql_error()."\n";
+	    logg("Error","Problems trying create user session in DB".mysql_error());
+    	    return false;
+        } else {
+        
+	      logg("Info","Session created to ".$username. " ".$ip. " expire ".readTime($end));
+              echo "La session fue creada con exito!";
+	      echo "</br>Redirigiendo...";
+	      sleep(5);
 	      echo '<meta HTTP-EQUIV="REFRESH" content="2; url=http://192.168.35.118:8080">';
 
                return true;
@@ -54,15 +62,6 @@ $arraytime = array();
 }
 
 
-function readTime($time) {
-    $arraytime = localtime($time, true);
-    if ($arraytime['tm_min'] < 10 ) {
-    $min = "0".$arraytime['tm_min'];
-    }else {
-    $min = $arraytime['tm_min'];
-    }
-    return $arraytime['tm_hour'].":".$min;
-}
 
 
 // Ya inicio session ?
@@ -93,11 +92,13 @@ if ($_GET['op'] == "delself"){ // si opta por kill session
 	$result = mysql_query($query);
 
 	if ($result) {
-	
+	    logg("Info",$row['username']." kill session! ".$ip);
 	    echo "Session finalizada, redirigiendo....\n";
 	    echo '<meta HTTP-EQUIV="REFRESH" content="5; url=http://192.168.35.118:8080">';
 	}else {
-	    echo "Error al borrar la session". mysql_error();
+	    
+	    logg("Error",$row['username']." trying kill session ".mysql_error());
+	    echo "Error al intentar borrar la session\n";
 	}
 
     }

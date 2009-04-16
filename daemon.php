@@ -2,6 +2,9 @@
 <?php
 
 include("db.php"); // Incluimos la BD
+include("functions.php"); // Funciones comunes
+include("config.php");
+
 
 system("pfctl -F all; pfctl -f /etc/pf.conf"); // Purgamos el pf y lo reseteamos
 
@@ -10,9 +13,13 @@ system("pfctl -F all; pfctl -f /etc/pf.conf"); // Purgamos el pf y lo reseteamos
 
 while(true) {
 
-system("pfctl -F nat"); // Flusheamos las tablas de NAT
+$out = system("pfctl -F nat"); // Flusheamos las tablas de NAT
 
-$fd = fopen("/etc/nat.conf","w"); // Abrimos archivo dinamico
+$fd = fopen($natfile,"w"); // Abrimos archivo dinamico
+
+if (!$fd) {
+    logg("Error","Error opening nat file".$natfile);
+}
 
 $query = "SELECT * FROM `sessions`"; 
 $result = mysql_query($query);
@@ -22,6 +29,7 @@ $num_rows = mysql_num_rows($result); // Extraemos numero de filas
 if (empty($num_rows)) {
      
 	echo "No records\n";
+	logg("Info","No records in DB :-[");
     }
     
 
@@ -41,7 +49,9 @@ $now = time(); //Hora actual
 	
 	    if (!$op) {
 		    echo "error deleting".$row['ip']."\n";
+		    logg("Error","Error trying delete ".$row['ip']);
 		}else{
+		    logg("Info","Session in ".$row['ip']. " expired! deleting...");		
 		    echo "\nSession con la ip ".$row['ip']." fue borrada de la Base de Datos\n";
 	    }
 	    
@@ -61,13 +71,14 @@ $default = "rdr on bge0 inet proto tcp from any to any port 80 -> 192.168.35.118
 fwrite($fd,$default); // Escribimos de nuevo
 
 
-$get = file_get_contents("/etc/nat.conf"); // Obtengo el contenido
+$get = file_get_contents($natfile); // Obtengo el contenido
 
 if ($get == "") {
     echo "NAT File is empty\n";
+    logg("Error","Nat file is empty");
 }else {
 
-system("pfctl -f /etc/nat.conf"); // Cargo las reglas al pf
+system("pfctl -f ".$natfile); // Cargo las reglas al pf
 
     echo "Loading rule from NAT file\n";
 }
@@ -91,27 +102,6 @@ $result = mysql_query($query);
 
     }
 
-}
-
-
-// Funcion para leer la hora correctamente
-
-function readTime($time) {
-
-    $arraytime = localtime($time, true);
-
-    if ($arraytime['tm_min'] < 10 ) {
-        $min = "0".$arraytime['tm_min'];
-    }else {
-	$min = $arraytime['tm_min'];
-    }
-    if ($arraytime['tm_sec'] < 10 ) {
-        $sec = "0".$arraytime['tm_sec'];
-    }else {
-	$sec = $arraytime['tm_sec'];
-    }
-    
-	return $arraytime['tm_hour'].":".$min.":".$sec;
 }
 
 
