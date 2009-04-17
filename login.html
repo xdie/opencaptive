@@ -1,32 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
-<title>Arcanos Proxy Server!</title>
-   <style type="text/css">
-   <?php include("style.css");?>
-   </style>
+<html> 
+<head> 
+<title>Portal Login</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta http-equiv="expires" content="0"> 
+<meta http-equiv="pragma" content="no-cache"> 
 </head> 
+<div align="center"> 
+  <form method="post" action="index.php?op=login"> 
+         <div align="center"> 
+             
+             <table width="250" border="0" cellspacing="0" cellpadding="0"> 
+              <tr> 
+              <td align="center"> 
+              <fieldset> 
+                 <Legend><font face="Verdana,Tahoma,Arial,sans-serif" size="1" color="gray">Enter Credentials</font></Legend> 
+                    <table border="0" cellspacing="3" cellpadding="0"> 
+                     <tr> 
+		     
+                        <td align="right" valign="middle"><b><font face="Verdana,Tahoma,Arial,sans-serif" size="1" color="gray">Username:</font></td> 
+                        <td align="center" valign="middle"> 
+                          <input class="clear" type="text" size="15" name="username"> 
+                        </td> 
+                      </tr> 
+                      <tr> 
+                        <td align="right" valign="middle">
+			<b><font face="Verdana,Tahoma,Arial,sans-serif" size="1" color="gray">Password:</font></td> 
+                        <td align="center" valign="middle"> 
+                        <input class="pass" type="password" size="15" name="password"> 
+                        </td> 
+                      </tr> 
+		      	
+		<tr>
 
-
-
-<body>
-<p><h1>Arcanos Proxy</h1></br>
-<h3>Necesitas iniciar session para poder navegar.</h3>
-<br>
-</p>
-<form id="login" name="login" method="post" action="http://192.168.35.118:8080/index.php">
-  <label>
-  Usuario:  &nbsp;    &nbsp;     &nbsp;
-  <input name="username" type="text" maxlength="20" />
-  <br />
-  Contrase&ntilde;a: 
-  <input name="password" type="text" maxlength="20" />
-  </label>
-  <p>
-    <label>Tiempo
-    <select name="time">
+<td align="right" valign="top"> 
+    
+    	<font face="Verdana,Tahoma,Arial,sans-serif" size="1" color="gray">Time:</font>         
+<td align="right" valign="top"> 
+	<select name="time">
       <option value="3" selected="selected">3 minutos</option>
       <option value="10">10 minutos</option>
       <option value="30">30 minutos</option>
@@ -35,18 +45,32 @@
       <option value="300">5 horas</option>
       <option value="600">10 horas</option>
     </select>
-    </label>
-    <input type="submit" name="Submit" value="Iniciar Session" />
-  </p>
-  <p>&nbsp;</p>
-  <p>
+    
+</td>
+</td>
+</tr>
+                      </table> 
+                    <input type=image src="images/login.gif" alt="Login" 
+name="image"> 
+                    <br> 
+                  </div> 
+                </td> 
+               </tr> 
+           </fieldset>              
+             </table> 
+             <br> 
+             <table width="640"><tr><td align="center"> 
+             <font face="Verdana,Tahoma,Arial,sans-serif" size="1" 
+color="silver">
 
+</font> 
+          </td></tr></table> 
+             
+          </div> 
+  </form> 
 
-    <a href="http://192.168.35.118:8080/?op=feedback">FeedBack!</a>  </p>
-  <p>&nbsp;</p>
-  <p align="center">Powered by OpenCaptive </p>
-</form>
-</body>
-</html>
-
+</div> 
+</body> 
+</html> 
+ 
 
