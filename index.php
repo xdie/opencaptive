@@ -4,13 +4,45 @@ include("db.php"); // Conectamos a la Base de Datos
 include("functions.php"); // Funciones comunes
 include("config.php");
 
-if ($_GET['op']== "block"){
+
+echo  '<style type="text/css">';
+include("style.css");
+echo '</style>'; // Stylesheet
+
+
+if ($_GET['op'] == "block"){
 
     echo "<h1>Usted no tiene permisos!</h1>\n";
     echo "Hola " . $_GET['clientuser'] . "! estas en la maquina " . $_GET['clientaddr'] . " No tienes permisos para navegar en " . $_GET['url'] . " por politicas de grupo " . $_GET['clientgroup'] . "</br> Si piensas que esto no es correcto, por favor comunicalo al administrador!<br>";
 
     logg("Block",$_GET['clientuser']. " Ip:".$_GET['clientaddr']. " Group:".$_GET['clientgroup']." Url:".$_GET['url']);
     exit;
+
+}
+
+
+if ($_GET['op'] == "feedback"){
+
+if ($_POST['comment'] == ""){
+echo '<form name="form1" method="post" action="?op=feedback">
+     <label><br> Por favor escribanos su comentario.<br> 
+      <br><textarea name="comment" cols="50" rows="10">Comentario</textarea>
+     </label><p><label></label><input type="submit" name="Submit" value="Enviar"></p></form>';
+exit; // Terminamos el script
+
+} else {
+
+  $cuerpo = "FeedBack\n";
+  $cuerpo .= "Comentario: " . $_POST["comment"] . "\n";
+  $cuerpo .= "IP: " . $_SERVER['REMOTE_ADDR'] . "\n";
+
+ // Mando el mail
+  mail("xdieamd@gmail.com","FeedBack OpenCaptive",$cuerpo); 
+  echo "Su comentario fue enviado con exito!\n";
+
+}
+
+// FeedBack form
 
 }
 
