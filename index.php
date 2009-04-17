@@ -2,13 +2,59 @@
 
 include("db.php"); // Conectamos a la Base de Datos
 include("functions.php"); // Funciones comunes
-include("config.php");
+include("config.php");  // Configs
+require_once("adLDAP.php");
+	
+checkLogged();
+
+if ($_GET['op'] == "login") {
+
+$username = mysql_escape_string($_POST['username']);
+$password = mysql_escape_string($_POST['password']);
+$time = mysql_escape_string($_POST['time']);
+
+$cmd = Auth($username,$password);
+
+if ($cmd) {
+
+echo "Authorizado";
+	createSession($username,$time);
+        $op = system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid borre las credenciales cacheadas
+	logg("Info","Reload squid config and flush users caches!".$op);
+	
+}else {
+echo "not logged";
+}
+
+}
+function Auth($username, $password){
+	
+	//create the AD LDAP connection
+	$adldap = new adLDAP();
+
+	//authenticate a user
+	if ($adldap->authenticate($username,$password)){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
+// Si es valido el usuario y password vamos authorizar creando la session
 
 
-echo  '<style type="text/css">';
-include("style.css");
-echo '</style>'; // Stylesheet
 
+
+
+//	createSession($username,$time);
+//        $op = system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid borre las credenciales cacheadas
+//	logg("Info","Reload squid config and flush users caches!".$op);
+	
+
+//}
+
+// Si es por bloqueo 
 
 if ($_GET['op'] == "block"){
 
@@ -20,6 +66,8 @@ if ($_GET['op'] == "block"){
 
 }
 
+
+// para feddbacks
 
 if ($_GET['op'] == "feedback"){
 
@@ -37,7 +85,7 @@ exit; // Terminamos el script
   $cuerpo .= "IP: " . $_SERVER['REMOTE_ADDR'] . "\n";
 
  // Mando el mail
-  mail("xdieamd@gmail.com","FeedBack OpenCaptive",$cuerpo); 
+  mail($mailadmin,"FeedBack OpenCaptive",$cuerpo); 
   echo "Su comentario fue enviado con exito!\n";
 
 }
@@ -46,20 +94,7 @@ exit; // Terminamos el script
 
 }
 
-// Si es valido el usuario y password vamos authorizar creando la session
-    
-$username = mysql_escape_string($_POST['username']);
-$time = mysql_escape_string($_POST['time']);
 
-   if (empty($username) or empty($time)) {
-	checkLogged();
-	
-	} else {
- 
-        createSession($username,$time);
-        $op = system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid borre las credenciales cacheadas
-	logg("Info","Reload squid config and flush users caches!".$op);
-	}
 
 
 // Crea la session en la base de datos
@@ -144,17 +179,16 @@ return true;
 
 if (empty($num_rows)){
    
-    include("login.html");
-
-return false;
 
 }
 
-    include("login.html");
-
+include("login.html");
 }
 
 
 
-?>
 
+        
+
+
+?> 
