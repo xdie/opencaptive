@@ -23,7 +23,7 @@ echo "Authorizado";
 	logg("Info","Reload squid config and flush users caches!".$op);
 	
 }else {
-echo "not logged";
+echo "Clave o nombre de usuario incorrecto.";
 }
 
 }
