@@ -3,8 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
-<title>Inicia Session en Arcanos Proxy!</title>
-</head>
+<title>Arcanos Proxy Server!</title>
+   <style type="text/css">
+   <?php include("style.css");?>
+   </style>
+</head> 
+
+
 
 <body>
 <p><h1>Arcanos Proxy</h1></br>
@@ -13,7 +18,7 @@
 </p>
 <form id="login" name="login" method="post" action="http://192.168.35.118:8080/index.php">
   <label>
-  Usuario:  &nbsp;    &nbsp; &nbsp;
+  Usuario:  &nbsp;    &nbsp;     &nbsp;
   <input name="username" type="text" maxlength="20" />
   <br />
   Contrase&ntilde;a: 
@@ -31,14 +36,17 @@
       <option value="600">10 horas</option>
     </select>
     </label>
+    <input type="submit" name="Submit" value="Iniciar Session" />
   </p>
   <p>&nbsp;</p>
   <p>
-    <label>
-    <input type="submit" name="Submit" value="Iniciar Session" />
-    </label>
-      </p>
+
+
+    <a href="http://192.168.35.118:8080/?op=feedback">FeedBack!</a>  </p>
+  <p>&nbsp;</p>
+  <p align="center">Powered by OpenCaptive </p>
 </form>
 </body>
 </html>
+
 

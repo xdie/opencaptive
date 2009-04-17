@@ -3,7 +3,7 @@
 
 include("db.php"); // Incluimos la BD
 include("functions.php"); // Funciones comunes
-include("config.php");
+include("config.php"); // Configuracion
 
 
 system("pfctl -F all; pfctl -f /etc/pf.conf"); // Purgamos el pf y lo reseteamos
