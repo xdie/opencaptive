@@ -3,7 +3,7 @@
 include("db.php"); // Conectamos a la Base de Datos
 include("functions.php"); // Funciones comunes
 include("config.php");  // Configs
-require_once("adLDAP.php");
+require_once("adLDAP.php"); // Incluimos la clase para manejar el ActiveDirectory
 	
 checkLogged();
 
@@ -17,44 +17,32 @@ $cmd = Auth($username,$password);
 
 if ($cmd) {
 
-echo "Authorizado";
+echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="gray">Authorizado!</p>';
 	createSession($username,$time);
         $op = system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid borre las credenciales cacheadas
 	logg("Info","Reload squid config and flush users caches!".$op);
 	
 }else {
-echo "Clave o nombre de usuario incorrecto.";
+echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="red">Password o Usuario incorrecto.</p></font>';
 }
 
 }
+
 function Auth($username, $password){
 	
-	//create the AD LDAP connection
+	// Creamos conexion con el ActiveDirectory
 	$adldap = new adLDAP();
 
-	//authenticate a user
+	// Authenticamos el usuario
 	if ($adldap->authenticate($username,$password)){
-		return true;
+		return true; // Valido
 	}else{
-		return false;
+		return false; // Invalido
 	}
 
 }
 
-// Si es valido el usuario y password vamos authorizar creando la session
-
-
-
-
-
-//	createSession($username,$time);
-//        $op = system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid borre las credenciales cacheadas
-//	logg("Info","Reload squid config and flush users caches!".$op);
-	
-
-//}
-
-// Si es por bloqueo 
+// Si se accedio a el portal por bloqueo 
 
 if ($_GET['op'] == "block"){
 
@@ -143,11 +131,12 @@ $num_rows = mysql_num_rows($result); //extraemos numero de filas
 while ($row=mysql_fetch_array($result)) { // recoremos registros
 
     if ($row['ip'] == $_SERVER['REMOTE_ADDR']){ // verificamos si la ip es la misma que el cliente
-
-	echo "Bienvenido ".$row['username']. " tu session empezo a las " .readTime($row['start']). " y finaliza a las " .  readTime($row['end'])."</br>";
+    
+	echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="blue">';
+	echo "Bienvenido ".$row['username']. " <br><br>Tu session inicio a las " .readTime($row['start']). " y finaliza a las " .  readTime($row['end'])."</br>";
 	echo "Mientras tanto puedes optar por visitar los siguientes links</br></br>";
-	echo "<a href=\"http://www.google.com.uy\">Google!</a></br>"; // Google link
-	echo "<a href=\"http://www.elpais.com.uy\">Diario ElPais</a></br>"; // Diario link
+	echo "<a href=\"http://www.google.com.uy\">Google!</a>-"; // Google link
+	echo "<a href=\"http://www.elpais.com.uy\">Diario ElPais</a>-"; // Diario link
 	echo "<a href=\"login.php?op=delself\">Terminar mi session Ahora!</a></br></body>"; // Kill session
 
 

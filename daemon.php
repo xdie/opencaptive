@@ -1,4 +1,3 @@
-
 <?php
 
 include("db.php"); // Incluimos la BD
@@ -92,13 +91,15 @@ sleep(5);       // esperamos 5 seg para loopear
 function showCurrent(){
 
 system("clear");
-echo "Hora Actual: ".readTime(time())."\n";
+echo "*************************************************************************\n";
+echo "* OpenCaptive\t\t\t\t\t Hora Actual: ".readTime(time())."\t*\n";
+echo "*************************************************************************\n";
 $query = "SELECT * FROM `sessions`"; 
 $result = mysql_query($query);
 
     while ($row=mysql_fetch_array($result)) { // recoremos registros
 
-	echo "Username:".$row['username']."\tIP:".$row['ip']."    Start:".readTime($row['start'])."    End:".readTime($row['end'])."\n";
+	echo "Username:".$row['username']."\tIP:".$row['ip']."    Start:".readTime($row['start'])."  End:".readTime($row['end'])."\n";
 
     }
 
