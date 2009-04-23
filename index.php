@@ -5,6 +5,19 @@ include("functions.php"); // Funciones comunes
 include("config.php");  // Configs
 require_once("adLDAP.php"); // Incluimos la clase para manejar el ActiveDirectory
 	
+// Si se accedio a el portal por bloqueo 
+
+if ($_GET['op'] == "block"){
+
+    echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" color="red"><h1>Usted no tiene permisos!</h1><br></font>';
+    
+    echo '<font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="grey">'."Hola " . $_GET['clientuser'] . "! estas en la maquina " . $_GET['clientaddr'] . " No tienes permisos para navegar en " . $_GET['url'] . " por politicas de grupo " . $_GET['clientgroup'] . "</br> Si piensas que esto no es correcto, por favor comunicalo al administrador!<br>";
+
+    logg("Block",$_GET['clientuser']. " Ip:".$_GET['clientaddr']. " Group:".$_GET['clientgroup']." Url:".$_GET['url']);
+    exit;
+
+}
+
 checkLogged();
 
 if ($_GET['op'] == "login") {
@@ -41,19 +54,6 @@ function Auth($username, $password){
 	}
 
 }
-
-// Si se accedio a el portal por bloqueo 
-
-if ($_GET['op'] == "block"){
-
-    echo "<h1>Usted no tiene permisos!</h1>\n";
-    echo "Hola " . $_GET['clientuser'] . "! estas en la maquina " . $_GET['clientaddr'] . " No tienes permisos para navegar en " . $_GET['url'] . " por politicas de grupo " . $_GET['clientgroup'] . "</br> Si piensas que esto no es correcto, por favor comunicalo al administrador!<br>";
-
-    logg("Block",$_GET['clientuser']. " Ip:".$_GET['clientaddr']. " Group:".$_GET['clientgroup']." Url:".$_GET['url']);
-    exit;
-
-}
-
 
 // para feddbacks
 
@@ -105,8 +105,11 @@ function createSession($username,$smin) {
 	    logg("Error","Problems trying create user session in DB".mysql_error());
     	    return false;
         } else {
-        
+    
+    	      $cmd = exec("sudo /var/www/bin/pf.php add ".$ip);
+
 	      echo logg("Info","Session created to ".$username. " ".$ip. " expire ".readTime($end));
+	      logg("PF",$cmd);
               echo "La session fue creada con exito!";
 	      echo "</br>Redirigiendo...";
 	      sleep(5);
@@ -148,6 +151,8 @@ if ($_GET['op'] == "delself"){ // si opta por kill session
 	$result = mysql_query($query);
 
 	if ($result) {
+    	     $cmd = exec("sudo /var/www/bin/pf.php delete ".$ip);
+
 	    logg("Info",$row['username']." kill session! ".$ip);
 	    echo "Session finalizada, redirigiendo....\n";
 	    echo '<meta HTTP-EQUIV="REFRESH" content="5; url=http://192.168.35.118:8080">';
