@@ -10,7 +10,7 @@ include("functions.php"); // Funciones comunes
 include("config.php"); // Configuracion
 
 
-system("pfctl -F all; pfctl -f /etc/pf.conf"); // Purgamos el pf y cargamos la config
+system("pfctl -F all; pfctl -f ".$pfile); // Purgamos el pf y cargamos la config
 
 // Loop Principal 
 
@@ -22,36 +22,37 @@ $result = mysql_query($query);
 $num_rows = mysql_num_rows($result); // Extraemos numero de filas
 
 
-if (empty($num_rows)) {
+	    if (empty($num_rows)) {
      
-	echo "No records\n";
-	logg("Info","No records in DB :-[");
-    }
+	    	echo "No records\n";
+	    	logg("Info","No records in DB :-[");
+	    }
     
 
-while ($row=mysql_fetch_array($result)) { // recoremos registros
+    while ($row=mysql_fetch_array($result)) { // recoremos registros
 
-    $now = time(); // Hora actual
-
-	if ($now > $row["end"]) { // si la hora actual es mayor que el tiempo de expiracion
+		$now = time(); // Hora actual
+    
+	    if ($now > $row["end"]) { // si la hora actual es mayor que el tiempo de expiracion
 	
-		    $arraytime = array(); // Reset al array de para la hora
-		    $op = mysql_query("DELETE FROM sessions WHERE ip='".$row['ip']."'"); // Borramos la ip que expiro
+			    $arraytime = array(); // Reset al array de para la hora
+			    $op = mysql_query("DELETE FROM sessions WHERE ip='".$row['ip']."'"); // Borramos la ip que expiro
 
-	    if (!$op) {
-			echo "Error deleting".$row['ip']."\n";
-		        logg("Error","Error trying delete ".$row['ip']);
+		    if (!$op) {
+				echo "Error deleting".$row['ip']."\n";
+			        logg("Error","Error trying delete ".$row['ip']);
 		      
-		      } else {
-		    	    $cmd = exec("/var/www/htdocs/opencaptive/bin/pf.php delete ".$row['ip']); // borramos la ip de la tabla redproxy
-			    logg("Info","Session in ".$row['ip']. " expired! deleting...".$cmd);		
-			    echo "Session con la ip ".$row['ip']." fue borrada de la Base de Datos\n";
-		      }
-      } 
-} 
+		    	    } else {
+				    $cmd = exec($pfhook." delete ".$row['ip']." 2>&1"); // borramos la ip de la tabla redproxy
+				    logg("PF",$cmd);
+				    logg("Info","Session in ".$row['ip']. " expired! deleting...");		
+				    echo "Session con la ip ".$row['ip']." fue borrada de la Base de Datos\n";
+		    	    }
+    	    } 
+    } 
 
-showCurrent();  // Muestro las sessiones
-sleep(5);       // esperamos 5 seg para loopear
+showCurrent();  
+sleep(5);       
 }
 
 // Mostrar sessiones activas

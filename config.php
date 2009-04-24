@@ -8,7 +8,8 @@ $dbpass = "";
 $dbname = "maindb";
 
 // FW
-$natfile = "/etc/nat.conf";
+$pfile = "/etc/pf.conf";
+$pfhook = "/var/www/htdocs/opencaptive/bin/pf.php"; // Este gancho tiene qeu colocarse fuera del htdocs por seguridad!
 
 // LOG
 $logfile = "/tmp/log";
