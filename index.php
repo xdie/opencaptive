@@ -4,7 +4,7 @@ include("db.php"); // Conectamos a la Base de Datos
 include("functions.php"); // Funciones comunes
 include("config.php");  // Configs
 require_once("adLDAP.php"); // Incluimos la clase para manejar el ActiveDirectory
-	
+
 // Si se accedio a el portal por bloqueo 
 
 if ($_GET['op'] == "block"){
@@ -89,6 +89,9 @@ exit; // Terminamos el script
 
 function createSession($username,$smin) {
 
+    global $pfhook; 
+    
+    
     $arraytime = array();
     $ip = $_SERVER['REMOTE_ADDR'];
     
@@ -105,15 +108,16 @@ function createSession($username,$smin) {
 	    logg("Error","Problems trying create user session in DB".mysql_error());
     	    return false;
         } else {
-    
-    	      $cmd = exec("sudo /var/www/htdocs/opencaptive/bin/pf.php add ".$ip);
-
-	      echo logg("Info","Session created to ".$username. " ".$ip. " expire ".readTime($end));
-	      logg("PF",$cmd);
-              echo "La session fue creada con exito!";
-	      echo "</br>Redirigiendo...";
-	      sleep(5);
-	      echo '<meta HTTP-EQUIV="REFRESH" content="2; url=http://192.168.35.118:8080">';
+    	      
+		$cmd = exec("sudo ".$pfhook." add ".$ip." 2>&1"); // Agregamos la ip a la tabla, para que pueda navegar
+		echo logg("Info","Session created to ".$username. " ".$ip. " expire ".readTime($end));
+		
+		logg("PF",$cmd); // Escribimos la el stderr y stdout en el log :)
+                
+		echo "La session fue creada con exito!";
+	        echo "</br>Redirigiendo...";
+	        sleep(5);
+	        echo '<meta HTTP-EQUIV="REFRESH" content="2; url=http://192.168.35.118:8080">';
 
                return true;
      }
@@ -126,7 +130,7 @@ function createSession($username,$smin) {
 
 
 function checkLogged(){
-
+global $pfhook;
 $query = "SELECT * FROM `sessions`";
 $result = mysql_query($query);
 $num_rows = mysql_num_rows($result); //extraemos numero de filas
@@ -151,8 +155,9 @@ if ($_GET['op'] == "delself"){ // si opta por kill session
 	$result = mysql_query($query);
 
 	if ($result) {
-    	     $cmd = exec("sudo /var/www/htdocs/opencaptive/bin/pf.php delete ".$ip);
-
+	     
+    	    $cmd = exec("sudo ".$pfhook." delete ".$ip." 2>&1");
+	    logg("PF",$cmd);
 	    logg("Info",$row['username']." kill session! ".$ip);
 	    echo "Session finalizada, redirigiendo....\n";
 	    echo '<meta HTTP-EQUIV="REFRESH" content="5; url=http://192.168.35.118:8080">';
