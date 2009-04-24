@@ -106,7 +106,7 @@ function createSession($username,$smin) {
     	    return false;
         } else {
     
-    	      $cmd = exec("sudo /var/www/bin/pf.php add ".$ip);
+    	      $cmd = exec("sudo /var/www/htdocs/opencaptive/bin/pf.php add ".$ip);
 
 	      echo logg("Info","Session created to ".$username. " ".$ip. " expire ".readTime($end));
 	      logg("PF",$cmd);
@@ -151,7 +151,7 @@ if ($_GET['op'] == "delself"){ // si opta por kill session
 	$result = mysql_query($query);
 
 	if ($result) {
-    	     $cmd = exec("sudo /var/www/bin/pf.php delete ".$ip);
+    	     $cmd = exec("sudo /var/www/htdocs/opencaptive/bin/pf.php delete ".$ip);
 
 	    logg("Info",$row['username']." kill session! ".$ip);
 	    echo "Session finalizada, redirigiendo....\n";
