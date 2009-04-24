@@ -1,12 +1,16 @@
 <?php
+/****************************************************************
+La funcion de este script, es borrar las sessiones, cuando
+su tiempo halla terminado, borra de la bd, y de la tabla en el pf
+*****************************************************************/
 
-include("db.php"); // Incluimos la BD
+
+include("db.php"); // Incluimos la BD 
 include("functions.php"); // Funciones comunes
 include("config.php"); // Configuracion
 
 
-system("pfctl -F all; pfctl -f /etc/pf.conf"); // Purgamos el pf y lo reseteamos
-
+system("pfctl -F all; pfctl -f /etc/pf.conf"); // Purgamos el pf y cargamos la config
 
 // Loop Principal 
 
@@ -27,26 +31,22 @@ if (empty($num_rows)) {
 
 while ($row=mysql_fetch_array($result)) { // recoremos registros
 
-$now = time(); //Hora actual
+    $now = time(); // Hora actual
 
-    if ($now > $row["end"]){ // si la hora actual es mayor que el tiempo de expiracion
+	if ($now > $row["end"]) { // si la hora actual es mayor que el tiempo de expiracion
 	
-	$arraytime = array(); // Reset al array de para la hora
-
-	
-	$op = mysql_query("DELETE FROM sessions WHERE ip='".$row['ip']."'"); // Borramos la ip que expiro
-
+		    $arraytime = array(); // Reset al array de para la hora
+		    $op = mysql_query("DELETE FROM sessions WHERE ip='".$row['ip']."'"); // Borramos la ip que expiro
 
 	    if (!$op) {
-		    echo "error deleting".$row['ip']."\n";
-		    logg("Error","Error trying delete ".$row['ip']);
-		}else{
-		$cmd = exec("sudo /var/www/bin/pf.php delete ".$row['ip']);
-		    logg("Info","Session in ".$row['ip']. " expired! deleting...".$cmd);		
-		    echo "\nSession con la ip ".$row['ip']." fue borrada de la Base de Datos\n";
-	    }
-	    
-	    
+			echo "Error deleting".$row['ip']."\n";
+		        logg("Error","Error trying delete ".$row['ip']);
+		      
+		      } else {
+		    	    $cmd = exec("/var/www/htdocs/opencaptive/bin/pf.php delete ".$row['ip']); // borramos la ip de la tabla redproxy
+			    logg("Info","Session in ".$row['ip']. " expired! deleting...".$cmd);		
+			    echo "Session con la ip ".$row['ip']." fue borrada de la Base de Datos\n";
+		      }
       } 
 } 
 
@@ -56,7 +56,7 @@ sleep(5);       // esperamos 5 seg para loopear
 
 // Mostrar sessiones activas
 
-function showCurrent(){
+function showCurrent() {
 
 system("clear");
 echo "*************************************************************************\n";
