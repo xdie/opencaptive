@@ -1,7 +1,8 @@
 <?php
+
 /****************************************************************
 La funcion de este script, es borrar las sessiones, cuando
-su tiempo halla terminado, borra de la bd, y de la tabla en el pf
+su tiempo halla terminado en la Bd y pf
 *****************************************************************/
 
 
@@ -60,6 +61,7 @@ sleep(5);
 function showCurrent() {
 
 system("clear");
+
 echo "*************************************************************************\n";
 echo "* OpenCaptive\t\t\t\t\t Hora Actual: ".readTime(time())."\t*\n";
 echo "*************************************************************************\n";
