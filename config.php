@@ -1,7 +1,6 @@
 <?php
 
 // DB 
-
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpass = "";
@@ -15,7 +14,6 @@ $pfhook = "/var/www/htdocs/opencaptive/bin/pf.php"; // Este gancho tiene qeu col
 $logfile = "/tmp/log";
 
 // MAIL
-
 $mailadmin = "xdieamd@gmail.com"; // Correo donde se enviaran los feedbacks
 
 
