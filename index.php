@@ -138,14 +138,9 @@ $num_rows = mysql_num_rows($result); //extraemos numero de filas
 while ($row=mysql_fetch_array($result)) { // recoremos registros
 
     if ($row['ip'] == $_SERVER['REMOTE_ADDR']){ // verificamos si la ip es la misma que el cliente
-    
-	echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="blue">';
-	echo "Bienvenido ".$row['username']. " <br><br>Tu session inicio a las " .readTime($row['start']). " y finaliza a las " .  readTime($row['end'])."</br>";
-	echo "Mientras tanto puedes optar por visitar los siguientes links</br></br>";
-	echo "<a href=\"http://www.google.com.uy\">Google!</a>-"; // Google link
-	echo "<a href=\"http://www.elpais.com.uy\">Diario ElPais</a>-"; // Diario link
-	echo "<a href=\"login.php?op=delself\">Terminar mi session Ahora!</a></br></body>"; // Kill session
 
+	include("userpanel.html");  // Inlcuimos el panel de usuario
+    
 
 if ($_GET['op'] == "delself"){ // si opta por kill session
 
