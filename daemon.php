@@ -25,8 +25,8 @@ $num_rows = mysql_num_rows($result); // Extraemos numero de filas
 
 	    if (empty($num_rows)) {
      
-	    	echo "No records\n";
-	    	logg("Info","No records in DB :-[");
+	    	//echo "No records\n";
+	    	//logg("Info","No records in DB :-[");
 	    }
     
 

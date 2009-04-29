@@ -18,7 +18,10 @@ if ($_GET['op'] == "block"){
 
 }
 
+// Iniciamos chequeando si esta logueado
+
 checkLogged();
+
 
 if ($_GET['op'] == "login") {
 
@@ -36,7 +39,7 @@ echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="gray">Auth
 	logg("Info","Reload squid config and flush users caches!".$op);
 	
 }else {
-echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="red">Password o Usuario incorrecto.</p></font>';
+    echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="red">Password o Usuario incorrecto.</p></font>';
 }
 
 }
@@ -55,41 +58,12 @@ function Auth($username, $password){
 
 }
 
-// para feddbacks
-
-if ($_GET['op'] == "feedback"){
-
-if ($_POST['comment'] == ""){
-echo '<form name="form1" method="post" action="?op=feedback">
-     <label><br> Por favor escribanos su comentario.<br> 
-      <br><textarea name="comment" cols="50" rows="10">Comentario</textarea>
-     </label><p><label></label><input type="submit" name="Submit" value="Enviar"></p></form>';
-exit; // Terminamos el script
-
-} else {
-
-  $cuerpo = "FeedBack\n";
-  $cuerpo .= "Comentario: " . $_POST["comment"] . "\n";
-  $cuerpo .= "IP: " . $_SERVER['REMOTE_ADDR'] . "\n";
-
- // Mando el mail
-  mail($mailadmin,"FeedBack OpenCaptive",$cuerpo); 
-  echo "Su comentario fue enviado con exito!\n";
-
-}
-
-// FeedBack form
-
-}
-
-
-
 
 // Crea la session en la base de datos
 
 function createSession($username,$smin) {
 
-    global $pfhook; 
+    global $pfhook, $rooturl; 
     
     
     $arraytime = array();
@@ -113,11 +87,10 @@ function createSession($username,$smin) {
 		echo logg("Info","Session created to ".$username. " ".$ip. " expire ".readTime($end));
 		
 		logg("PF",$cmd); // Escribimos la el stderr y stdout en el log :)
-                
 		echo "La session fue creada con exito!";
 	        echo "</br>Redirigiendo...";
-	        sleep(5);
-	        echo '<meta HTTP-EQUIV="REFRESH" content="2; url=http://192.168.35.118:8080">';
+	        sleep(2);
+	        echo '<meta HTTP-EQUIV="REFRESH" content="2; url='.$rooturl.'">';
 
                return true;
      }
@@ -130,7 +103,9 @@ function createSession($username,$smin) {
 
 
 function checkLogged(){
-global $pfhook;
+
+    global $pfhook, $rooturl;
+
 $query = "SELECT * FROM `sessions`";
 $result = mysql_query($query);
 $num_rows = mysql_num_rows($result); //extraemos numero de filas
@@ -155,7 +130,8 @@ if ($_GET['op'] == "delself"){ // si opta por kill session
 	    logg("PF",$cmd);
 	    logg("Info",$row['username']." kill session! ".$ip);
 	    echo "Session finalizada, redirigiendo....\n";
-	    echo '<meta HTTP-EQUIV="REFRESH" content="5; url=http://192.168.35.118:8080">';
+            echo '<meta HTTP-EQUIV="REFRESH" content="2; url='.$rooturl.'">';
+	    
 	}else {
 	    
 	    logg("Error",$row['username']." trying kill session ".mysql_error());
