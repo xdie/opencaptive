@@ -1,0 +1,27 @@
+
+<fieldset> 
+<Legend>
+<font face="Verdana,Tahoma,Arial,sans-serif" size="1" color="gray">
+Panel de Usuario 
+</font>
+</Legend>
+<table border="0" cellspacing="3" cellpadding="0">
+<tr><td>
+<p><font face="Verdana,Tahoma,Arial,sans-serif" size="3" color="black">
+Bienvenido <?php echo $row['username']; ?> </p></font></td></tr>
+<tr><td>
+<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="grey">
+<b>Datos de tu Session</b></p></font></tr></td>
+<font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="grey">
+<tr><td>
+<p><b> Tiempo de Inicio: </b><?php echo " ".readTime($row['start']); ?></p></tr></td>
+<tr><td><p><b> Tiempo de Expiracion: </b><?php echo " ".readTime($row['end']);?></p></tr></td>
+<tr><td><p><b> Direccion Ip: </b><?php echo " ".$row['ip'];?></tr></td></font>
+<tr><td>
+<a href="http://www.google.com.uy">Google!</a>
+<a href="http://www.elpais.com.uy">Diario ElPais</a>
+<a href="login.php?op=delself">Terminar mi session Ahora!</a></br></body>
+</tr></td>
+</fieldset></table>
+
+
