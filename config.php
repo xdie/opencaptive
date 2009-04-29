@@ -6,6 +6,9 @@ $dbuser = "root";
 $dbpass = "";
 $dbname = "maindb";
 
+// GENERAL
+$rooturl = "http://192.168.35.118:8080";
+
 // FW
 $pfile = "/etc/pf.conf";
 $pfhook = "/var/www/htdocs/opencaptive/bin/pf.php"; // Este gancho tiene qeu colocarse fuera del htdocs por seguridad!
