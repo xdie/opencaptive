@@ -3,6 +3,7 @@
 /*****************************************************************/
 /*  La funcion de este script, es borrar las sessiones, cuando 	 */
 /*  su tiempo halla terminado en la Bd y pf			 */
+/*  este es ejecutado por el cron cada 5 segundos		 */
 /*****************************************************************/
 
 
@@ -11,12 +12,7 @@ include("functions.php"); // Funciones comunes
 include("config.php"); // Configuracion
 
 
-system("pfctl -F all; pfctl -f ".$pfile); // Purgamos el pf y cargamos la config
-
-// Loop Principal 
-
-while(true) {
-
+//system("pfctl -F all; pfctl -f ".$pfile); // Purgamos el pf y cargamos la config
 
 $query = "SELECT * FROM `sessions`"; 
 $result = mysql_query($query);
@@ -52,11 +48,8 @@ $num_rows = mysql_num_rows($result); // Extraemos numero de filas
     	    } 
     } 
 
-showCurrent();  
-sleep(5);       
-}
 
-// Mostrar sessiones activas
+// Funcion para mostrar sessiones activas
 
 function showCurrent() {
 

@@ -5,11 +5,11 @@ include("functions.php"); // Funciones comunes
 include("config.php");  // Configs
 require_once("adLDAP.php"); // Incluimos la clase para manejar el ActiveDirectory
 
-// Si se accedio a el portal por bloqueo 
+// Si se accedio a el portal por bloqueo de algun sitio en particular
 
 if ($_GET['op'] == "block"){
 
-    echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" color="red"><h1>Usted no tiene permisos!</h1><br></font>';
+    echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" color="red"><h1>Acceso Denegado!</h1><br></font>';
     
     echo '<font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="grey">'."Hola " . $_GET['clientuser'] . "! estas en la maquina " . $_GET['clientaddr'] . " No tienes permisos para navegar en " . $_GET['url'] . " por politicas de grupo " . $_GET['clientgroup'] . "</br> Si piensas que esto no es correcto, por favor comunicalo al administrador!<br>";
 
