@@ -41,7 +41,6 @@ Requisitos:
 * MySQL >= 5
 * php5, php5-cli, php5-mysql, php5-ldap
 * Servidor proxy, Squid(recomendado)
-* Screen >= 4.0
 
 Opcionales:
 
