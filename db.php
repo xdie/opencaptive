@@ -3,7 +3,7 @@
 /* Este archivo solo conecta con la base de datos :)*/
 
 include("config.php");
-include("functions.php");
+
 
 $dbsock = mysql_connect($dbhost, $dbuser, $dbpass);
 
