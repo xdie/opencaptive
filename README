@@ -41,6 +41,7 @@ Requisitos:
 * MySQL >= 5
 * php5, php5-cli, php5-mysql, php5-ldap
 * Servidor proxy, Squid(recomendado)
+* Screen >= 4.0
 
 Opcionales:
 
@@ -50,5 +51,12 @@ Opcionales:
 
 
 Instalacion:
+
+
+daemon.php debe correr en el cron, ej:
+
+#crontab -e
+
+*/1 * * * * /usr/local/bin/php /var/www/htdocs/opencaptive/daemon.php
 
 
