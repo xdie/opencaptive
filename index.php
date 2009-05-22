@@ -4,7 +4,7 @@ include("db.php"); // Conectamos a la Base de Datos
 include("functions.php"); // Funciones comunes
 include("config.php");  // Configs
 require_once("adLDAP.php"); // Incluimos la clase para manejar el ActiveDirectory
-
+//error_reporting(1);
 // Si se accedio a el portal por bloqueo de algun sitio en particular
 
 if ($_GET['op'] == "block"){
