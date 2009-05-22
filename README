@@ -52,7 +52,7 @@ Opcionales:
 Instalacion:
 
 
-daemon.php debe correr en el cron, ej:
+daemon.php debe correr en el cron, ej cada 1 minuto:
 
 #crontab -e
 
