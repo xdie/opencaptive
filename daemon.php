@@ -1,9 +1,9 @@
 <?php
 
-/****************************************************************
-La funcion de este script, es borrar las sessiones, cuando
-su tiempo halla terminado en la Bd y pf
-*****************************************************************/
+/*****************************************************************/
+/*  La funcion de este script, es borrar las sessiones, cuando 	 */
+/*  su tiempo halla terminado en la Bd y pf			 */
+/*****************************************************************/
 
 
 include("db.php"); // Incluimos la BD 

@@ -24,11 +24,12 @@ function readTime($time) {
 
 function logg($type,$string) {
 
-include("config.php"); // Cargamos la configuracion
+    include("config.php"); // Cargamos la configuracion
 
 $fd = fopen($logfile,"a");
 
 $data = $type." | ".date("d:m:Y h:m:s")." ".$string."\n";
+
 fwrite($fd,$data);
 fclose($fd);
 
