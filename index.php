@@ -1,17 +1,34 @@
 <?php
 
-include("db.php"); // Conectamos a la Base de Datos
 include("functions.php"); // Funciones comunes
 include("config.php");  // Configs
 require_once("adLDAP.php"); // Incluimos la clase para manejar el ActiveDirectory
-//error_reporting(1);
+
+
+// Conectamos con la base de datos
+
+$dbsock = mysql_connect($dbhost, $dbuser, $dbpass);
+
+if(!$dbsock) {
+	logg("BD", mysql_error());
+        die("Cannot connect. " . mysql_error());
+}
+
+$dbselect = mysql_select_db($dbname);
+
+if(!$dbselect) {
+	logg("BD", mysql_error());
+        die("Cannot select database " . mysql_error());
+}
+
+
 // Si se accedio a el portal por bloqueo de algun sitio en particular
 
 if ($_GET['op'] == "block"){
 
     echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" color="red"><h1>Acceso Denegado!</h1><br></font>';
     
-    echo '<font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="grey">'."Hola " . $_GET['clientuser'] . "! estas en la maquina " . $_GET['clientaddr'] . " No tienes permisos para navegar en " . $_GET['url'] . " por politicas de grupo " . $_GET['clientgroup'] . "</br> Si piensas que esto no es correcto, por favor comunicalo al administrador!<br>";
+    echo '<font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="grey">'."Hola " . $_GET['clientuser'] . "! estas en la maquina " . $_GET['clientaddr'] . " No tienes permisos para navegar en " . $_GET['url'] . " por politicas de grupo " . $_GET['clientgroup'] . "</br> Si crees que esto es un error, por favor comuniquese con el departamento de sistemas!<br>";
 
     logg("Block",$_GET['clientuser']. " Ip:".$_GET['clientaddr']. " Group:".$_GET['clientgroup']." Url:".$_GET['url']);
     exit;
@@ -33,13 +50,17 @@ $cmd = Auth($username,$password);
 
 if ($cmd) {
 
-echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="gray">Authorizado!</p>';
+
+echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="gray">Autorizado con exito!</p>';
 	createSession($username,$time);
         $op = system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid borre las credenciales cacheadas
 	logg("Info","Reload squid config and flush users caches!".$op);
 	
 }else {
+
     echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="red">Password o Usuario incorrecto.</p></font>';
+    
+    alertMail("Error de logueo","El usuario ". $username. " intento acceder mas de 3 veces y fallo con el password " . $password . " desde la ip ".$_SERVER['REMOTE_ADDR']);
 }
 
 }
@@ -87,8 +108,8 @@ function createSession($username,$smin) {
 		echo logg("Info","Session created to ".$username. " ".$ip. " expire ".readTime($end));
 		
 		logg("PF",$cmd); // Escribimos la el stderr y stdout en el log :)
-		echo "La session fue creada con exito!";
-	        echo "</br>Redirigiendo...";
+		echo "Session iniciada!";
+	        echo "</br>Redirigiendo...Espere...";
 	        sleep(2);
 	        echo '<meta HTTP-EQUIV="REFRESH" content="2; url='.$rooturl.'">';
 
@@ -162,3 +183,4 @@ include("login.html");
 
 
 ?> 
+

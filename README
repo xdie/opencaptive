@@ -39,8 +39,8 @@ permitiendo un proxy transparente con autentificacion de usuarios.
 Requisitos:
 
 * MySQL >= 5
-* php5, php5-cli, php5-mysql, php5-ldap
-* Servidor proxy, Squid(recomendado)
+* php5, php5-cli, php5-mysql, php5-ldap, PEAR(Mail, Net-Smtp)
+* Servidor proxy, Squid(recomendado) de lo contrario hay que cambiar las reglas del PF
 
 Opcionales:
 

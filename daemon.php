@@ -7,10 +7,24 @@
 /*****************************************************************/
 
 
-include("db.php"); // Incluimos la BD 
 include("functions.php"); // Funciones comunes
 include("config.php"); // Configuracion
 
+// Conectamos con la base de datos
+
+$dbsock = mysql_connect($dbhost, $dbuser, $dbpass);
+
+if(!$dbsock) {
+	logg("BD",mysql_error());
+        die("Cannot connect. " . mysql_error());
+}
+
+$dbselect = mysql_select_db($dbname);
+
+if(!$dbselect) {
+	logg("BD",mysql_error());
+        die("Cannot select database " . mysql_error());
+}
 
 //system("pfctl -F all; pfctl -f ".$pfile); // Purgamos el pf y cargamos la config
 
@@ -73,5 +87,6 @@ $result = mysql_query($query);
 
 
 ?>
+
 
 
