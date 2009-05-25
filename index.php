@@ -60,7 +60,7 @@ echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="gray">Auto
 
     echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="red">Password o Usuario incorrecto.</p></font>';
     
-    alertMail("Error de logueo","El usuario ". $username. " intento acceder mas de 3 veces y fallo con el password " . $password . " desde la ip ".$_SERVER['REMOTE_ADDR']);
+    alertMail("Error de logueo","El usuario ". $username. " intento acceder y fallo con el password " . $password . " desde la ip ".$_SERVER['REMOTE_ADDR']);
 }
 
 }
