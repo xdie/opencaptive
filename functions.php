@@ -35,6 +35,22 @@ fclose($fd);
 
 }
 
+// Envio de alertas por mail
 
+function alertMail($subject,$mailmsg) {
 
+error_reporting(1);
+
+include("Mail.php");
+include("config.php");
+
+$recipients = $mailadmin;
+$headers["From"] = $mailfrom;
+$headers["To"] = $mailadmin;
+$headers["Subject"] = $subject;
+
+$mail_object =& Mail::factory("smtp", $smtpconf);
+$mail_object->send($recipients, $headers, $mailmsg);
+
+}
 ?>

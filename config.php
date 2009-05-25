@@ -16,8 +16,17 @@ $pfhook = "/var/www/htdocs/opencaptive/bin/pf.php"; // Este gancho tiene que col
 // LOG
 $logfile = "/tmp/log";
 
-// MAIL
-$mailadmin = "xdieamd@gmail.com"; // Correo donde se enviaran los feedbacks
+// MAIL CONFIG
+$mailadmin = "rgliksberg@dedicado.com";
+$mailfrom = "proxyserver@dedicado.com";
+
+// MAIL SERVER CONFIG
+$smtpconf["host"] = "mail.dedicado.com";
+$smtpconf["port"] = "25";
+$smtpconf["auth"] = true;
+$smtpconf["username"] = "proxyserver";
+$smtpconf["password"] = "proxy123456";
+//$smtpconf["debug"] = TRUE;
 
 
 ?>
