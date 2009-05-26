@@ -52,10 +52,29 @@ Opcionales:
 Instalacion:
 
 
-daemon.php debe correr en el cron, ej cada 1 minuto:
+tar -zxvf opencaptive.tar.gz
 
-#crontab -e
-
+crontab -e 
+----------------------------------------
 */1 * * * * /usr/local/bin/php /var/www/htdocs/opencaptive/daemon.php
+*/5 * * * * /usr/local/bin/php /var/www/htdocs/opencaptive/monitor.php
+----------------------------------------
 
+Editar /etc/sudoers
+-----------------------------------------
+www     ALL=(ALL) NOPASSWD:  /usr/local/sbin/squid -k reconfigure # para refrescar el cache de credenciales
+www     ALL=(ALL) NOPASSWD:  /var/www/htdocs/opencaptive/bin/pf.php # Pfhook, para manejar el firewall
+-----------------------------------------
+
+Crear el archivo de log
+----------------------------------------
+touch /var/log/opencaptive.log
+chown www /var/log/opencaptive.log
+chmod 775 /var/log/opencaptive.log
+----------------------------------------
+
+Editar  /etc/newsyslog.conf y agregar los siguiente 
+-----------------------------------------
+/var/log/opencaptive.log                775  7     250  *     Z
+-----------------------------------------
 
