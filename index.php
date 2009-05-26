@@ -42,28 +42,33 @@ checkLogged();
 
 if ($_GET['op'] == "login") {
 
-$username = mysql_escape_string($_POST['username']);
+$username = mysql_escape_string($_POST['username']); // escapamos caracteres pedorros
 $password = mysql_escape_string($_POST['password']);
 $time = mysql_escape_string($_POST['time']);
 
-$cmd = Auth($username,$password);
+    if (empty($username) and empty($password)) {
 
-if ($cmd) {
+	echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="red">Debe ingresar los datos!.</p></font>';
+
+        } else {
+
+	    $cmd = Auth($username,$password);
+
+		if ($cmd) {
 
 
-echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="gray">Autorizado con exito!</p>';
-	createSession($username,$time);
-        $op = system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid borre las credenciales cacheadas
-	logg("Info","Reload squid config and flush users caches!".$op);
-	
-}else {
-
-    echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="red">Password o Usuario incorrecto.</p></font>';
-    
-    alertMail("Error de logueo","El usuario ". $username. " intento acceder y fallo con el password " . $password . " desde la ip ".$_SERVER['REMOTE_ADDR']);
+		    echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="gray">Autorizado con exito!</p>';
+		    createSession($username,$time);
+    		    $op = system("sudo /usr/local/sbin/squid -k reconfigure"); //recargamos la config para que el squid borre las credenciales cacheadas
+		    logg("Info","Reload squid config and flush users caches!".$op);
+	    
+		} else {
+	    	    echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="red">Password o Usuario incorrecto.</p></font>';
+	    	    alertMail("Error de logueo","El usuario ". $username. " intento acceder y fallo con el password " . $password . " desde la ip ".$_SERVER['REMOTE_ADDR']);
+		}
+	}
 }
 
-}
 
 function Auth($username, $password){
 	

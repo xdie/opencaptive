@@ -27,8 +27,9 @@ function logg($type,$string) {
     include("config.php"); // Cargamos la configuracion
 
 $fd = fopen($logfile,"a");
+$time = date("M d h:m:s");
 
-$data = $type." | ".date("d:m:Y h:m:s")." ".$string."\n";
+$data = $time."\t".$type."  ".$string."\n";
 
 fwrite($fd,$data);
 fclose($fd);
