@@ -27,7 +27,7 @@ alertMail("Alerta! fallo el redirector","El redirector squidGuard no esta funcio
 
 } else {
 
-logg("Info","Probablemente el squidguard este funcionando de maravilla");
+//logg("Info","Probablemente el squidguard este funcionando de maravilla");
 }
 
 }
