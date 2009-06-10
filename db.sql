@@ -8,3 +8,9 @@ CREATE TABLE sessions (
          start VARCHAR(100),
          end VARCHAR(100)
        );
+
+CREATE TABLE users (
+         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+         username VARCHAR(64),
+         password VARCHAR(64) 
+       );
