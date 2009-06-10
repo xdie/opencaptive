@@ -29,6 +29,7 @@ if ($_GET['op'] == "block"){
     echo '<p><font face="Verdana,Tahoma,Arial,sans-serif" color="red"><h1>Acceso Denegado!</h1><br></font>';
     
     echo '<font face="Verdana,Tahoma,Arial,sans-serif" size="2" color="grey">'."Hola " . $_GET['clientuser'] . "! estas en la maquina " . $_GET['clientaddr'] . " No tienes permisos para navegar en " . $_GET['url'] . " por politicas de grupo " . $_GET['clientgroup'] . "</br> Si crees que esto es un error, por favor comuniquese con el departamento de sistemas!<br>";
+    echo '</br><a href="'.$rooturl.'"> Menu del Usuario</a>';
 
     logg("Block",$_GET['clientuser']. " Ip:".$_GET['clientaddr']. " Group:".$_GET['clientgroup']." Url:".$_GET['url']);
     exit;

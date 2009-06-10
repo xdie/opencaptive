@@ -56,8 +56,8 @@ tar -zxvf opencaptive.tar.gz
 
 crontab -e 
 ----------------------------------------
-*/1 * * * * /usr/local/bin/php /var/www/htdocs/opencaptive/daemon.php
-*/5 * * * * /usr/local/bin/php /var/www/htdocs/opencaptive/monitor.php
+*/1 * * * * /usr/local/bin/php /var/www/htdocs/opencaptive/daemon.php # chequea las sessiones que xpiraron
+*/5 * * * * /usr/local/bin/php /var/www/htdocs/opencaptive/monitor.php # chequea cuando failea quidGuard
 ----------------------------------------
 
 Editar /etc/sudoers
