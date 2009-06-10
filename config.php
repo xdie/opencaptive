@@ -25,7 +25,7 @@ $smtpconf["host"] = "mail.dedicado.com";
 $smtpconf["port"] = "25";
 $smtpconf["auth"] = true;
 $smtpconf["username"] = "proxyserver";
-$smtpconf["password"] = "proxy123456";
+$smtpconf["password"] = "";
 //$smtpconf["debug"] = TRUE;
 
 
